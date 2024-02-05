@@ -1,0 +1,2 @@
+Este es el archivo ORIGINAL test2
+Este es el archivo NUEVO test2
