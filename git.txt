@@ -1,0 +1,249 @@
+git
+
+//Especifica que usaremos el editor de VSCode
+git config --global core.editor "code --wait"
+
+//Configurar color en las pantallas de git
+git config --global color.ui true
+
+git config --global user.name "Omar Leal"
+git config --global user.email "oleal2011@gmail.com"
+
+//Auto carriage return line field
+git config --global core.autocrlf true
+
+
+//Auto carriage return line field (Linux, MAC)
+git config --global core.autocrlf input
+
+//Crear carpeta
+mkdir nombreDeCarpeta
+
+//Crear archivo
+touch archivo.txt
+
+//Eliminar carpeta
+rmdir nombreDeCarpeta
+
+//Eliminar archivo
+rm [nombre archivo]
+
+//Que archivos hay dentro de la carpeta
+dir
+
+
+//Mostrar archivos ocultos
+ls -a
+
+//Inicializar GIT
+git init 
+
+//Agregar archivos a cargar
+git add
+
+//Agregar todos los archivos a cargar
+git add --a
+
+//Revisar status de git
+git status
+
+//Realizar commits
+git commit -m "mensaje de commit"
+
+//Recuperar un archivo eliminado que estaba agregado
+git restore
+
+//Recuperar los datos que tenia un archivo desde la ultima vez que se guardo
+git checkout nombreDeArchivo
+
+//Regresar todos los archivos a su ultimo status de guardado (No aplica a los staged)
+git reset --hard
+
+//Git status corto
+git status -s
+
+// GIT DIFF - Checar diferencias entre versiones de los archivos agregados (staged)
+//Nos muestra en color rojo la ultima version guardada y nuestros cambios en color verde
+git diff --staged
+
+//Cambiar la abreviatura de los commits
+git config --global core.abbrev 7 (modificas con numero el largo del texto)
+
+//Checar el historial de commits
+git log //con detalles
+git log --oneline //version simplificada
+ 
+// GIT DIFF - Checar diferencias entre nombres de archivos y diferentes commits
+git diff --name-only commit1 commit2
+
+// GIT DIFF - Checar lineas de codigo entre diferentes commits
+git diff --word-diff commit1 commit2
+
+Ejemplo git diff word diff
+primer commit: 11319
+segundo commit: e9ac3
+
+// MODIFICAR COMMITS Y DESHACER COMMITS
+
+//Modificar commit
+git commit --amend
+//Te abre ventana con el status del ultimo commit para que veas que mensaje tiene
+y que archivos contiene.
+Si quieres agregar modificaciones a archivos incluidos en ese commmit los puedes hacer e
+inclusive puedes agregar mas archivos a ese ultimo commit.
+- Modificas el nombre del commit
+- Te aseguras que los archivos esten incluidos en ese commit
+- Recuerda presionar [ESC] y :wq para salir del modo de edicion
+
+//GIT REBASE Modifica un commit del log (CUIDADO: Modifica los IDS de los commits posteriores)
+1. git rebase -i head-3 (El numero indica cuantos commits hacia atras queremos regresar)
+2. Abre ventana, nos muestra el log de commits, tenemos que seleccionar nuestro commit y editarlo.
+3. Realizamos nuestros cambios con git commit --amend o con git rebase
+4. Modificamos el mensaje del ammend.
+5. git rebase --continue (Nos regresa con todo el log de commits)
+
+//Deshacer commits
+git reset --soft IDcommit (Los ultimos cambios de los archivos se mantienen)
+git reset --hard IDcommit (Regresamos a la version de los archivos en ese commit y elimina archivos que no estaban presentes en el directorio de acuerdo a ese commit que queremos regresar CUIDADO)
+
+BRANCHES
+
+//Ver branches
+git branch
+
+//Crear una branch nueva
+git branch [nombre de branch]
+
+//Cambiar de rama
+git checkout [nombre de branch] o git switch [nombre de branch] (Forma SEGURA)
+
+//Crear branch y posicionarse en la nueva branch
+git switch -c [nombre de branch]
+
+//Eliminar branch
+git branch -d [nombre de branch]
+
+//Modificar branch (nombre) estando en branch diferente
+git branch -m [nombre de branch] [nuevo nombre]
+
+//Modificar branch (estando en esa branch) (Si ya tenemos el repo creado, hay que subir ese cambio de nombre con un commit)
+git branch -m [nuevo nombre]
+
+
+MERGE
+
+//Fusionar 2 branches (MERGE)
+(Posiciona a la branch final, donde quieres los cambios fusionados)
+git merge [branch que tiene los cambios a fusionar]
+
+//Deshacer merge (como el commit haciendo un reset)
+git reset --hard [IDcommit]
+
+
+MERGE CONFLICTS
+Pasa cuando 2 branches tienen conflicto en sus commits hacia el merge a master.
+Cuando realizamos el merge a master, aparecera o entraremos en la fase de "merge conflic" o "MERGING".
+En nuestro caso como tenemos configurado nuestro editor de git con VsCode, nos dara la oportunidad de poder resolver nuestros conflictos en el editor.
+Nos muestra en nuestro editor el archivo en conflicto junto con los apartados "Current Change" e "Incoming change" mostrando los cambios en el archivo de las respectivas branches.
+Para tener un panorama un poco mas amigable y decidir con que cambio nos quedaremos o si preferimos fusionar ambos cambios de las dos branches podemos abrir el "Merge Editor".
+
+Tenemos 4 opciones:
+1. Aceptar el cambio de la primer branch a master.
+2. Aceptar el cambio de la segunda branch a master.
+3. Fusionar ambos cambios de las branches a master.
+4. No aceptar ningun merge a master.
+
+//git merge --continue
+
+
+GIT IGNORE
+archivo para declarar que archivos se ignoraran para que git no los rastree de cambios nuevos a commitear.
+
+// Archivo .gitignore global
+Nos posicionamos un directoria arriba de nuestro proyecto.
+1. Creamos nuestro archivo [.gitignore_global]
+2. Volvemos a nuestro directorio de proyecto.
+3. git config --global core.excludesfile [Ruta de nuestro archivo .gitignore_global]
+4. git add . , git commit -m [mensaje de commit].
+
+[Siempre se le da prioridad a las especificaciones locales, si es necesario realizar una exepcion a nivel local con un archivo .gitignore se le dara prioridad a este]
+
+GIT ALIAS
+Ejemplo:
+git log --oneline
+
+// git config --global alias.log-mejorado "log --oneline"
+
+Resultado:
+// git log-mejorado
+
+GIT REFLOG
+Es un historico de HEAD con sus commits.
+Si nosotros borramos un commit con
+git reset --hard [IDcommit]
+Ya no veremos ese commit que eliminamos usando un 
+git log --oneline
+pero podremos acceder a el viendo ese historico con
+//git reflog
+salimos de ese modo con :q y presionamos [ENTER]
+y podremos acceder a ese commit que elimnamos de la siguiente manera:
+git reset --hard [IDCommit al que queremos regresar] o con git checkout [IDCommit al que ueremos regresar]
+nos aseguramos de poder verlo de nuevo con 
+git log --oneline
+
+GITHUB
+
+GIT CLONE
+
+//git clone [repositorio remoto]
+
+[*******NOTA**********]
+[fatal: unable to access 'https://github.com/OmarLeal/git.git/': SSL certificate problem: unable to get local issuer certificate]
+Para arreglar este error tienes que ejecutar esto en las configuraciones globales de git
+git config --global http.sslbackend schannel
+
+GIT PUSH
+Subimos los commits al repositorio remoto
+//git push origin
+
+GIT PULL (git fetch y git merge)
+Te descarga todos los cambios y archivos nuevos del repositorio remoto a tu local
+//git pull [origin master]
+
+GIT FETCH
+Podemos revisar todos los cambios que vamos a bajar del repo remoto a nivel local.
+//git fetch
+
+MIGRAR REPOSITORIO LOCAL A REMOTO
+git remote add origin https://github.com/OmarLeal/nuevo-repo-git.git
+git branch -M main
+git push -u origin main
+
+FORKS
+Se hace un git clone a un repositorio remoto a nuestra cuenta de un repo de otra persona.
+
+PULL REQUEST
+Es el proceso para poder aceptar cambios realizados desde tu branch hacia otra.
+Se pueden realizar pull request desde una branch a otra en un solo repo o se pueden realizar pull request haciendo fork de un repo de otra persona, realizas tus cambios, creas el pull request para que el owner del repo original vea tus cambios, los analice y si le gustan los cambios que realizaste el owner puede aceptar ese pull request y hacer merge con su repo.
+Usualmente el proceso de pull request tiene reviewers en donde una persona apta y con el conocimiento suficiente para poder evaluar el codigo que se tiene vs el codigo nuevo a mergear se analiza y lo acepta para poder fusionarlo.
+
+BUENAS PRACTICAS EN GIT
+1. Agregar .gitignore
+2. Crear branches (Con objetivo especifico, describir bien, se cumple objetivo y se elimina)
+3. No trabajar en branch master.
+4. Usar estrategias de ramas (branching strategy)
+5. Los commits deben de ser significativos.
+6. Mantener actualizado el repositorio remoto (pull requests) (git pull)
+7. Mantener limpio el log.
+
+
+SIGUIENTES PASOS
+git stash, git stash pop
+git cherry-pick fusionar un commit en especifico con otra branch
+git rebase Nos llevamos varios commits a otra branch
+git squash Combina una serie de commits en un solo commit.
+submodulos
+git bisect Commando para encontrar un commit que ocasiono un problema.
+git hooks Ejecutan scripts en ciertos momentos especificos.
+gitFlow
+gitHubFlow
